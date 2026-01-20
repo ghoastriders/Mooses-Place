@@ -1,0 +1,21 @@
+services:
+  api:
+    build:
+      context: ./services/api
+    env_file:
+      - ./services/api/.env
+    ports:
+      - "8000:8000"
+
+  web:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./apps/web:/app
+    env_file:
+      - ./apps/web/.env
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      - api
